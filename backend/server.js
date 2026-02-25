@@ -50,6 +50,11 @@ app.post("/upload", upload.single("file"), async (req, res) => {
     res.status(500).send(" Error submitting");
   }
 });
+// Basic endpoint returning "hello"
+app.get("/hello", (req, res) => {
+  res.send("hello");
+});
+
 
 app.listen(5000, () =>
   console.log("🚀 Server running on http://localhost:5000")
