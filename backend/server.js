@@ -37,8 +37,8 @@ app.post("/upload", upload.single("file"), async (req, res) => {
     port: 587, // Changed from 465 to 587 for better compatibility
     secure: false, // Use STARTTLS instead of SSL
     auth: {
-      user: process.env.GMAIL_USER || 'empoweredai3@gmail.com',
-      pass: process.env.GMAIL_PASSWORD || 'ktcv bbgt yxab tbyy',
+      user: process.env.EMAIL_USER || 'empoweredai3@gmail.com',
+      pass: process.env.EMAIL_PASSWORD || 'ktcv bbgt yxab tbyy',
     },
     connectionTimeout: 10000, // 10 seconds
     socketTimeout: 10000, // 10 seconds
