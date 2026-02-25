@@ -40,9 +40,6 @@
       </h1>
     </div>
 
-    <!-- Backend Selection -->
-    <!-- Removed - Using hardcoded deployed URL -->
-
     <!-- Main Content -->
     <div style="max-width: 800px; margin: 40px auto; padding: 0 20px">
       <!-- File Upload Section -->
@@ -151,8 +148,6 @@
     </div>
 
     <script>
-      const BACKEND_URL = "https://file-emailer.onrender.com";
-
       function updateFileName(input) {
         const fileName = document.getElementById('fileName');
         if (input.files.length > 0) {
@@ -190,31 +185,21 @@
           statusDiv.innerText = "⏳ Uploading file...";
 
           try {
-            let res = await fetch(`${BACKEND_URL}/upload`, {
+            let res = await fetch("https://file-emailer.onrender.com/upload", {
               method: "POST",
               body: formData,
             });
             let text = await res.text();
 
-            if (res.ok) {
-              statusDiv.style.background = "#dcfce7";
-              statusDiv.style.color = "#166534";
-              statusDiv.style.border = "1px solid #bbf7d0";
-              statusDiv.innerText = "✅ " + text;
-              // Reset form
-              document.getElementById("uploadForm").reset();
-              document.getElementById("fileName").style.display = "none";
-            } else {
-              statusDiv.style.background = "#fef2f2";
-              statusDiv.style.color = "#dc2626";
-              statusDiv.style.border = "1px solid #fecaca";
-              statusDiv.innerText = "❌ " + (text || "Error uploading file");
-            }
+            statusDiv.style.background = "#dcfce7";
+            statusDiv.style.color = "#166534";
+            statusDiv.style.border = "1px solid #bbf7d0";
+            statusDiv.innerText = "✅ " + text;
           } catch (err) {
             statusDiv.style.background = "#fef2f2";
             statusDiv.style.color = "#dc2626";
             statusDiv.style.border = "1px solid #fecaca";
-            statusDiv.innerText = "❌ Error: " + err.message;
+            statusDiv.innerText = "❌ Error uploading file";
           }
         });
     </script>
