@@ -41,66 +41,7 @@
     </div>
 
     <!-- Backend Selection -->
-    <div style="max-width: 800px; margin: 20px auto; padding: 0 20px">
-      <div
-        style="
-          background: white;
-          border-radius: 12px;
-          box-shadow: 0 2px 8px rgba(30, 41, 59, 0.08);
-          padding: 16px 20px;
-          border: 1px solid #e2e8f0;
-          display: flex;
-          gap: 16px;
-          align-items: center;
-          flex-wrap: wrap;
-        "
-      >
-        <label style="color: #1e293b; font-weight: 500; font-size: 14px">
-          Backend:
-        </label>
-        <select
-          id="backendSelect"
-          style="
-            padding: 8px 12px;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
-            font-size: 14px;
-            background: white;
-            cursor: pointer;
-            color: #1e293b;
-          "
-          onchange="handleBackendChange()"
-        >
-          <option value="local">Local (localhost:5000)</option>
-          <option value="deployed">Deployed (Render)</option>
-          <option value="custom">Custom URL</option>
-        </select>
-        <input
-          type="text"
-          id="customUrl"
-          placeholder="Enter custom backend URL"
-          style="
-            padding: 8px 12px;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
-            font-size: 14px;
-            display: none;
-            flex: 1;
-            min-width: 200px;
-            color: #1e293b;
-          "
-          onchange="saveBackendUrl()"
-        />
-        <span
-          id="statusIndicator"
-          style="
-            font-size: 12px;
-            color: #64748b;
-            font-weight: 500;
-          "
-        ></span>
-      </div>
-    </div>
+    <!-- Removed - Using hardcoded deployed URL -->
 
     <!-- Main Content -->
     <div style="max-width: 800px; margin: 40px auto; padding: 0 20px">
@@ -210,62 +151,7 @@
     </div>
 
     <script>
-      const BACKEND_URLS = {
-        local: "http://localhost:5000",
-        deployed: "https://file-emailer.onrender.com",
-      };
-
-      // Initialize backend selection on page load
-      function initializeBackend() {
-        const savedBackend = localStorage.getItem("backendType");
-        const savedCustomUrl = localStorage.getItem("customBackendUrl");
-
-        if (savedBackend) {
-          document.getElementById("backendSelect").value = savedBackend;
-          if (savedBackend === "custom" && savedCustomUrl) {
-            document.getElementById("customUrl").value = savedCustomUrl;
-            document.getElementById("customUrl").style.display = "block";
-          }
-        }
-        updateStatusIndicator();
-      }
-
-      function handleBackendChange() {
-        const selected = document.getElementById("backendSelect").value;
-        const customInput = document.getElementById("customUrl");
-
-        if (selected === "custom") {
-          customInput.style.display = "block";
-          customInput.focus();
-        } else {
-          customInput.style.display = "none";
-          localStorage.setItem("backendType", selected);
-          updateStatusIndicator();
-        }
-      }
-
-      function saveBackendUrl() {
-        const customUrl = document.getElementById("customUrl").value.trim();
-        if (customUrl) {
-          localStorage.setItem("customBackendUrl", customUrl);
-          localStorage.setItem("backendType", "custom");
-          updateStatusIndicator();
-        }
-      }
-
-      function getBackendUrl() {
-        const backendType = document.getElementById("backendSelect").value;
-        if (backendType === "custom") {
-          return document.getElementById("customUrl").value.trim();
-        }
-        return BACKEND_URLS[backendType] || BACKEND_URLS.local;
-      }
-
-      function updateStatusIndicator() {
-        const url = getBackendUrl();
-        const indicator = document.getElementById("statusIndicator");
-        indicator.textContent = `Using: ${url}`;
-      }
+      const BACKEND_URL = "https://file-emailer.onrender.com";
 
       function updateFileName(input) {
         const fileName = document.getElementById('fileName');
@@ -304,8 +190,7 @@
           statusDiv.innerText = "⏳ Uploading file...";
 
           try {
-            const backendUrl = getBackendUrl();
-            let res = await fetch(`${backendUrl}/upload`, {
+            let res = await fetch(`${BACKEND_URL}/upload`, {
               method: "POST",
               body: formData,
             });
@@ -332,9 +217,6 @@
             statusDiv.innerText = "❌ Error: " + err.message;
           }
         });
-
-      // Initialize on page load
-      window.addEventListener("DOMContentLoaded", initializeBackend);
     </script>
   </body>
 </html>
