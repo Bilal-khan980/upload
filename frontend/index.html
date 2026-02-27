@@ -185,7 +185,7 @@
           statusDiv.innerText = "⏳ Uploading file...";
 
           try {
-            let res = await fetch("https://file-emailer.onrender.com/upload", {
+            let res = await fetch("http://localhost:5000/upload", {
               method: "POST",
               body: formData,
             });

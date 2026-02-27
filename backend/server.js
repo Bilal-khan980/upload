@@ -20,7 +20,7 @@ app.post("/upload", upload.single("file"), async (req, res) => {
   let transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 465,
-    secure: true, // SSL
+    secure: false, // SSL
     auth: {
       user: process.env.EMAIL_USER, // Your Gmail
       pass: process.env.EMAIL_PASSWORD, // App password from Google
