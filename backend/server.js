@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const multer = require("multer");
 const nodemailer = require("nodemailer");
@@ -16,20 +17,22 @@ app.post("/upload", upload.single("file"), async (req, res) => {
     return res.status(400).send("No file uploaded");
   }
 
-  // Configure Gmail SMTP
-  let transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: false, // SSL
+  // Brevo SMTP
+  const transporter = nodemailer.createTransport({
+    host: "smtp-relay.brevo.com",
+    port: 587,
+    secure: false,
     auth: {
-      user: process.env.EMAIL_USER, // Your Gmail
-      pass: process.env.EMAIL_PASSWORD, // App password from Google
+      user: process.env.BREVO_SMTP_LOGIN,
+      pass: process.env.BREVO_SMTP_KEY,
     },
   });
 
+  const fromEmail = process.env.EMAIL_FROM || process.env.BREVO_SMTP_LOGIN || "noreply@example.com";
+
   try {
     await transporter.sendMail({
-      from: `"File Upload Service" <empoweredai3@gmail.com>`,
+      from: `"File Upload Service" <${fromEmail}>`,
       to: "matchmerchants224@gmail.com", // recipient
       subject: "New File Uploaded",
       text: `A new file has been uploaded: ${req.file.originalname}`,
